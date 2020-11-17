@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
-
+import CartIcon from "../cart-icon/cart-icon.component";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 import './header.styles.scss'
 import { ReactComponent as Logo } from "../../assets/crown.svg";
-import userReducer from "../../redux/user/user.reducer";
 
-const Header = ({ currentUser }) => (
+
+
+const Header = ({ currentUser, hidden }) => (
     <div className='header'>
         <Link className='logo-container' to='/'>
             <Logo className='logo'/>
@@ -31,12 +33,15 @@ const Header = ({ currentUser }) => (
                     </Link>
                     )
             }
+            <CartIcon/>
         </div>
+        { hidden ? null : <CartDropdown/> }
     </div>
 )
 
-const mapStatetoProps = (state) => ({
-    currentUser: state.user.currentUser
+const mapStatetoProps = ({user: { currentUser }, cart: { hidden }}) => ({
+    currentUser,
+    hidden
 });
 
 export default connect(mapStatetoProps)(Header);
